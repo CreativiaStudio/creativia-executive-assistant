@@ -1,0 +1,12 @@
+{
+  "name": "creativia-executive-assistant",
+  "version": "1.0.0",
+  "description": "Mobile Executive Assistant per Creativia Studio — Sincronizzazione Hub & Google Calendar da remoto",
+  "type": "module",
+  "scripts": {
+    "hub": "node hub.js"
+  },
+  "keywords": ["creativia", "hub", "assistant", "antigravity"],
+  "author": "Mario / Creativia Studio",
+  "license": "Private"
+}
