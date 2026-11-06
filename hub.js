@@ -279,6 +279,27 @@ async function handleCompleteTask(args) {
   console.log(`\n🎉 ATTIVITÀ COMPLETATA E ARCHIVIATA: "${match.title}"`);
 }
 
+// 6. PREVENTIVI CLIENTE
+async function handleGetQuotes(args) {
+  const clientQuery = args.client;
+  if (!clientQuery) throw new Error('Cliente mancante (--client "<nome>")');
+
+  const client = await findClient(clientQuery);
+  const quotes = await api(`quotes?client_id=eq.${client.id}&select=id,created_at,total_amount,mrr_amount,status&order=created_at.desc&limit=5`);
+
+  console.log(`\n💼 PREVENTIVI CLIENTE: ${client.company_name} (${quotes.length}):`);
+  if (quotes.length === 0) {
+    console.log('  (Nessun preventivo registrato)');
+  } else {
+    for (const q of quotes) {
+      const date = q.created_at ? q.created_at.split('T')[0] : '';
+      const total = q.total_amount ? `${q.total_amount} €` : 'N/D';
+      const mrr = q.mrr_amount ? ` + ${q.mrr_amount} €/mese MRR` : '';
+      console.log(` • [${q.status.toUpperCase()}] ${date}: ${total}${mrr} (ID: ${q.id})`);
+    }
+  }
+}
+
 // PARSER ARGOMENTI CLI
 function parseArgs() {
   const raw = process.argv.slice(2);
@@ -318,6 +339,9 @@ async function main() {
       case 'complete-task':
         await handleCompleteTask(args);
         break;
+      case 'get-quotes':
+        await handleGetQuotes(args);
+        break;
       default:
         console.log(`
 Creativia Executive Assistant — CLI
@@ -327,6 +351,7 @@ Uso:
   node hub.js add-task --client "<nome>" --title "<titolo>" [--due "YYYY-MM-DD"] [--time "HH:MM"] [--priority "urgent|high|medium|low"] [--desc "<dettagli>"]
   node hub.js add-note --client "<nome>" --content "<testo_della_nota>" [--title "<titolo>"] [--participants "<nomi>"]
   node hub.js get-client --client "<nome>"
+  node hub.js get-quotes --client "<nome>"
   node hub.js complete-task [--client "<nome>"] --title "<parola_chiave_o_titolo>"
 `);
     }

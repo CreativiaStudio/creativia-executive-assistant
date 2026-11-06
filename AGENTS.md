@@ -53,13 +53,20 @@ node hub.js get-client --client "<nome_cliente>"
 ```
 *Mostra le attività aperte e gli ultimi 3 incontri/call registrati.*
 
-### 5. Completare un'Attività
+### 5. Consultare i Preventivi di un Cliente
+Se Mario ti chiede quanto era stato preventivato o lo stato dell'offerta:
+```bash
+node hub.js get-quotes --client "<nome_cliente>"
+```
+*Mostra gli importi (totale e canone MRR mensile) e lo stato del preventivo.*
+
+### 6. Completare un'Attività
 Se Mario ti dice che un lavoro è stato fatto:
 ```bash
 node hub.js complete-task --client "<nome_cliente>" --title "<titolo_o_parte>"
 ```
 
-### 6. Ricerca Clienti Dubbi
+### 7. Ricerca Clienti Dubbi
 Se non sei sicuro dell'esatto nome cliente citato da Mario:
 ```bash
 node hub.js list-clients
